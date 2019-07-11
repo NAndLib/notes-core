@@ -1,0 +1,28 @@
+\ProvidesPackage{notes}
+
+\usepackage[bookmarks]{hyperref}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{courier}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+\lstset{
+  basicstyle=\footnotesize\ttfamily,
+  numbers=left,
+  stepnumber=1,
+  showstringspaces=false,
+  tabsize=1,
+  breaklines=true,
+  breakatwhitespace=false,
+}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+% Anything wrapped between \ifprivate ... \fi will not be shown unless
+% \privatetrue is set
+\newif\ifprivate
+\privatetrue

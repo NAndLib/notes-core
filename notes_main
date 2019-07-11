@@ -1,0 +1,22 @@
+#!/bin/bash
+# Generates a main.tex file that has all entries in the "entries" directory.
+
+cat > main.tex <<EOT
+\\documentclass[12pt]{article}
+\\usepackage{notes}
+
+\\author{Andrew Tran}
+\\title{Notes \\ifprivate (Private Version) \\fi}
+
+\\begin{document}
+\\maketitle
+\\tableofcontents
+\\newpage
+EOT
+
+for note in $@; do
+  echo "\\input{${note}}" >> main.tex
+  echo "\\newpage" >> main.tex
+done
+
+echo "\\end{document}" >> main.tex

@@ -1,0 +1,77 @@
+#!/bin/bash
+SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+NOTES_DIR="${SRC_DIR}/notes.d"
+
+git-command() {
+  pushd "${SRC_DIR}"
+  (set -x ; git "$@")
+  popd
+}
+
+print_help() {
+  cat <<EOT
+Usage: notes [command] | [filename]
+  help                  Prints this help message.
+  list                  List all note files.
+  open                  Opens generated PDF file of notes.
+  edit [filename]       Edits the specified note. The specified note must have
+                        the .tex extension. The most recent note if no note is
+                        specified.
+  git [git-command], status, push, pull, commit
+                        Runs specified git command on the notes directory.
+  make [target]         Runs specified make target on the notes directory.
+EOT
+}
+
+set -e
+case "$1" in
+  help)
+    print_help
+    ;;
+  list)
+    echo "${NOTES_DIR}"
+    ls -1 "${NOTES_DIR}"
+    ;;
+  open)
+    xdg-open "${SRC_DIR}/out/notes.pdf"
+    ;;
+  git)
+    shift
+    git-command "$@"
+    ;;
+  status)
+    git-command "status"
+    ;;
+  push)
+    git-command "push"
+    ;;
+  pull)
+    git-command "pull"
+    ;;
+  commit)
+    git-command "$@"
+    ;;
+  make)
+    shift
+    make --no-print-directory -C "${SRC_DIR}" "${@:-all}" check-privacy
+    ;;
+  edit)
+    EDIT_NOTE="true"
+    shift
+    ;&
+  *)
+    if [[ "${EDIT_NOTE:-false}" == "true" ]]; then
+      NOTE_NAME=${1:-$(find "$NOTES_DIR" -type f -name "*.tex" \
+        -printf "%T@ %Tc %p\n" | sort -n | tail -1 \
+        | awk '{ print $NF }' | xargs basename)}
+    else
+      TODAY="$(date +%Y-%m-%d)"
+      if [[ -z "$1" ]]; then
+        NOTE_NAME="${TODAY}.tex"
+      else
+        NOTE_NAME="$1.tex"
+      fi
+    fi
+
+    "${EDITOR:-vi}" "${NOTES_DIR}/${NOTE_NAME}"
+esac
