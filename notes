@@ -24,7 +24,7 @@ EOT
 }
 
 set -e
-case "$1" in
+case "${1:-help}" in
   help)
     print_help
     ;;
