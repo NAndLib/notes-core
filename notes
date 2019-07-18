@@ -61,6 +61,8 @@ case "${1:-help}" in
     ;&
   *)
     if [[ "${EDIT_NOTE:-false}" == "true" ]]; then
+      # if no file was given for the command, the most recently edited note file
+      # will be opened.
       NOTE_NAME=${1:-$(find "$NOTES_DIR" -type f -name "*.tex" \
         -printf "%T@ %Tc %p\n" | sort -n | tail -1 \
         | awk '{ print $NF }' | xargs basename)}

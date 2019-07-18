@@ -1,15 +1,19 @@
+% Change this file to adjust any styling for the notes file.
+
 \ProvidesPackage{notes}
 
 \usepackage[bookmarks]{hyperref}
-\usepackage{fullpage}
-\usepackage{amsmath}
-\usepackage{tikz}
-\usepackage{listings}
-\usepackage{courier}
+\usepackage{fullpage} % use the entire page instead of the usual LaTeX margins.
+\usepackage{amsmath}  % math symbols.
+\usepackage{tikz}     % graphs.
+\usepackage{listings} % code.
+\usepackage{courier}  % font used in listing environment.
 
+% Paragraph formatting.
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em}
 
+% Formatting for code listings.
 \lstset{
   basicstyle=\footnotesize\ttfamily,
   numbers=left,
@@ -20,6 +24,7 @@
   breakatwhitespace=false,
 }
 
+% Custom commands.
 \newcommand{\code}[1]{\texttt{#1}}
 
 % Anything wrapped between \ifprivate ... \fi will not be shown unless

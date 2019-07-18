@@ -1,5 +1,6 @@
 #!/bin/bash
 # Generates a main.tex file that has all entries in the "entries" directory.
+# To change the style of the notes, add them to the file notes.sty.
 
 cat > main.tex <<EOT
 \\documentclass[12pt]{article}
