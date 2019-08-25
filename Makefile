@@ -23,13 +23,13 @@ main.tex: $(NOTES)
 	./notes_main $^
 
 .PHONY: public private check-privacy
-public:			## Hide private contents in the generated notes file.
+public:		## Hide private contents in the generated notes file.
 	sed -i 's/^\(\\privatetrue\)/%\1/g' notes.sty
 
-private:		## Show private contents in the generated notes file.
+private:	## Show private contents in the generated notes file.
 	sed -i 's/^%\(\\privatetrue\)/\1/g' notes.sty
 
-check-privacy:		## Checks whether the generated notes file can be distributed safely.
+check-privacy:	## Checks whether the generated notes file can be distributed safely.
 	@if grep '^\\privatetrue' "notes.sty" > /dev/null; then \
 		echo -e "\033[0;31mNotes currently displaying private sections.\033[0m" ; \
 	else \
@@ -40,10 +40,14 @@ clean:	## Removes all generated files.
 	$(RM) out/
 	$(RM) main.tex
 
+install: ## Installs the notes executable to PREFIX
+	ln -s $(shell pwd)/notes $(PREFIX)
+
 # Automatically generates a "help" target.
 # For a target to be automatically generated, put a comment starting with "##"
 # after a target definition.
 help:		## Prints this help message.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 		| sort \
-		| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+		| awk 'BEGIN {FS = ":.*?## "}; \
+					 {printf "\033[01;36m%-30s\033[0m %s\n", $$1, $$2}'

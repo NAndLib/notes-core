@@ -16,14 +16,13 @@ notes [name]
 ```
 If no name is provided, the current date will be the note's name.
 
-Once a note is taken, to edit the note, run:
-```
-notes edit [name]
-```
+Once a note is taken, running the same command again will open the note for
+editing.
+
 If no name is provided, the most recent note will be edited.
 
-To take notes from anywhere, append the full path to the repo to your `PATH`
-variable.
+To take notes from anywhere, run: `make intsall`. Change `PREFIX` to the
+location for the executable.
 
 The notes file will be edited by whatever editor is specified by `$EDITOR`, or
 Vi by default.

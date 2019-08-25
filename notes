@@ -1,6 +1,21 @@
 #!/bin/bash
-SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-NOTES_DIR="${SRC_DIR}/notes.d"
+
+# Find the real path of the source file.
+NOTES_SOURCE="${BASH_SOURCE[0]}"
+# resolve $SOURCE until the file is no longer a symlink.
+while [ -h "$NOTES_SOURCE" ]; do
+  TARGET="$(readlink "$NOTES_SOURCE")"
+  if [[ $TARGET == /* ]]; then
+    NOTES_SOURCE="$TARGET"
+  else
+    NOTES_DIR="$(dirname "$NOTES_SOURCE")"
+    # in case $NOTES_SOURCE was a relative symlink.
+    NOTES_SOURCE="$NOTES_DIR/$TARGET"
+  fi
+done
+
+NOTES_SRC_DIR="$(cd -P "$(dirname "$NOTES_SOURCE")" > /dev/null 2>&1 && pwd)"
+NOTES_ENTRY_DIR="${NOTES_SRC_DIR}/notes.d"
 
 git-command() {
   pushd "${SRC_DIR}"
@@ -10,13 +25,13 @@ git-command() {
 
 print_help() {
   cat <<EOT
-Usage: notes [command] | [filename]
+Usage: notes (command|filename)
+
+Commands:
   help                  Prints this help message.
   list                  List all note files.
   open                  Opens generated PDF file of notes.
-  edit [filename]       Edits the specified note. The specified note must have
-                        the .tex extension. The most recent note if no note is
-                        specified.
+  edit                  Edits the most recently edited note.
   git [git-command], status, push, pull, commit
                         Runs specified git command on the notes directory.
   make [target]         Runs specified make target on the notes directory.
@@ -29,8 +44,8 @@ case "${1:-help}" in
     print_help
     ;;
   list)
-    echo "${NOTES_DIR}"
-    ls -1 "${NOTES_DIR}"
+    echo "${NOTES_ENTRY_DIR}"
+    ls -1 "${NOTES_ENTRY_DIR}"
     ;;
   open)
     xdg-open "${SRC_DIR}/out/notes.pdf"
@@ -53,7 +68,7 @@ case "${1:-help}" in
     ;;
   make)
     shift
-    make --no-print-directory -C "${SRC_DIR}" "${@:-all}" check-privacy
+    make --no-print-directory -C "${NOTES_SRC_DIR}" "${@:-all}" check-privacy
     ;;
   edit)
     EDIT_NOTE="true"
@@ -61,11 +76,10 @@ case "${1:-help}" in
     ;&
   *)
     if [[ "${EDIT_NOTE:-false}" == "true" ]]; then
-      # if no file was given for the command, the most recently edited note file
-      # will be opened.
-      NOTE_NAME=${1:-$(find "$NOTES_DIR" -type f -name "*.tex" \
+      # The most recently edited note file will be opened.
+      NOTE_NAME=$(find "$NOTES_ENTRY_DIR" -type f -name "*.tex" \
         -printf "%T@ %Tc %p\n" | sort -n | tail -1 \
-        | awk '{ print $NF }' | xargs basename)}
+        | awk '{ print $NF }' | xargs basename)
     else
       TODAY="$(date +%Y-%m-%d)"
       if [[ -z "$1" ]]; then
@@ -75,5 +89,5 @@ case "${1:-help}" in
       fi
     fi
 
-    "${EDITOR:-vi}" "${NOTES_DIR}/${NOTE_NAME}"
+    "${EDITOR:-vi}" "${NOTES_ENTRY_DIR}/${NOTE_NAME}"
 esac
