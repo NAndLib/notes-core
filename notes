@@ -18,7 +18,7 @@ NOTES_SRC_DIR="$(cd -P "$(dirname "$NOTES_SOURCE")" > /dev/null 2>&1 && pwd)"
 NOTES_ENTRY_DIR="${NOTES_SRC_DIR}/notes.d"
 
 git-command() {
-  pushd "${SRC_DIR}"
+  pushd "${NOTES_SRC_DIR}"
   (set -x ; git "$@")
   popd
 }
