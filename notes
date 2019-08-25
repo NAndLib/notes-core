@@ -49,7 +49,7 @@ case "${1:-help}" in
     ls -1 "${NOTES_ENTRY_DIR}"
     ;;
   open)
-    xdg-open "${SRC_DIR}/out/notes.pdf"
+    xdg-open "${NOTES_SRC_DIR}/out/notes.pdf"
     ;;
   git)
     shift
