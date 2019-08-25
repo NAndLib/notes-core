@@ -9,23 +9,19 @@ or
 ```
 notes make
 ```
-
 A note can be made from within the repository by running:
 ```
 notes [name]
 ```
-If no name is provided, the current date will be the note's name.
+If no name is provided, the current date will be the note's name. Once a note is
+taken, running the same command again will open the note for editing.
 
-Once a note is taken, running the same command again will open the note for
-editing.
-
-If no name is provided, the most recent note will be edited.
-
-To take notes from anywhere, run: `make intsall`. Change `PREFIX` to the
-location for the executable.
+To use the `notes` command from anywhere, run:
+`make install`
+The variable `PREFIX` can be used to set the location for the executable.
 
 The notes file will be edited by whatever editor is specified by `$EDITOR`, or
-Vi by default.
+Vim by default.
 
 To list other `notes` commands, run `notes help`. Similarly, to list all `make`
 targets, run `make help`.

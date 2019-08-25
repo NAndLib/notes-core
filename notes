@@ -89,5 +89,5 @@ case "${1:-help}" in
       fi
     fi
 
-    "${EDITOR:-vi}" "${NOTES_ENTRY_DIR}/${NOTE_NAME}"
+    "${EDITOR:-vim}" "${NOTES_ENTRY_DIR}/${NOTE_NAME}"
 esac
