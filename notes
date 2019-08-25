@@ -86,7 +86,7 @@ case "${1:-help}" in
         -printf "%T@ %Tc %p\n" | sort -n | tail -1 \
         | awk '{ print $NF }' | xargs basename)
     else
-      NOTE_NAME=$1
+      NOTE_NAME="$1.tex"
     fi
 
     "${EDITOR:-vim}" "${NOTES_ENTRY_DIR}/${NOTE_NAME}"
