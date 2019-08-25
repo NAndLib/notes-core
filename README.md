@@ -13,8 +13,8 @@ A note can be made from within the repository by running:
 ```
 notes [name]
 ```
-If no name is provided, the current date will be the note's name. Once a note is
-taken, running the same command again will open the note for editing.
+Once a note is taken, running the same command again will open the note for
+editing.
 
 To use the `notes` command from anywhere, run:
 `make install`

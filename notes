@@ -35,15 +35,16 @@ Commands:
   git [git-command], status, push, pull, commit
                         Runs specified git command on the notes directory.
   make [target]         Runs specified make target on the notes directory.
+
 EOT
 }
 
 set -e
 case "${1:-help}" in
-  help)
+  help|-h|--help)
     print_help
     ;;
-  list)
+  list|ls)
     echo "${NOTES_ENTRY_DIR}"
     ls -1 "${NOTES_ENTRY_DIR}"
     ;;
@@ -73,7 +74,11 @@ case "${1:-help}" in
   edit)
     EDIT_NOTE="true"
     shift
-    ;&
+    ;;
+  --*|-*)
+    echo "Unknown command: $1."
+    print_help
+    ;;
   *)
     if [[ "${EDIT_NOTE:-false}" == "true" ]]; then
       # The most recently edited note file will be opened.
@@ -81,12 +86,7 @@ case "${1:-help}" in
         -printf "%T@ %Tc %p\n" | sort -n | tail -1 \
         | awk '{ print $NF }' | xargs basename)
     else
-      TODAY="$(date +%Y-%m-%d)"
-      if [[ -z "$1" ]]; then
-        NOTE_NAME="${TODAY}.tex"
-      else
-        NOTE_NAME="$1.tex"
-      fi
+      NOTE_NAME=$1
     fi
 
     "${EDITOR:-vim}" "${NOTES_ENTRY_DIR}/${NOTE_NAME}"
