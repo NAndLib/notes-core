@@ -46,7 +46,7 @@ case "${1:-help}" in
     ;;
   list|ls)
     echo "${NOTES_ENTRY_DIR}"
-    ls -1t "${NOTES_ENTRY_DIR}"
+    ls -1 "${NOTES_ENTRY_DIR}"
     ;;
   open)
     xdg-open "${NOTES_SRC_DIR}/out/notes.pdf"
@@ -71,17 +71,20 @@ case "${1:-help}" in
     shift
     make --no-print-directory -C "${NOTES_SRC_DIR}" "${@:-all}" check-privacy
     ;;
+  edit)
+    EDIT_NOTE="true"
+    shift
+    ;;
   --*|-*)
     echo "Unknown command: $1."
     print_help
     ;;
-  edit)
-    EDIT_NOTE="true"
-    ;&
   *)
     if [[ "${EDIT_NOTE:-false}" == "true" ]]; then
       # The most recently edited note file will be opened.
-      NOTE_NAME=$(ls -1t "${NOTES_ENTRY_DIR}" | head -1)
+      NOTE_NAME=$(find "$NOTES_ENTRY_DIR" -type f -name "*.tex" \
+        -printf "%T@ %Tc %p\n" | sort -n | tail -1 \
+        | awk '{ print $NF }' | xargs basename)
     else
       NOTE_NAME="$1.tex"
     fi
