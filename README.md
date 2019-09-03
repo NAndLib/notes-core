@@ -20,6 +20,11 @@ To use the `notes` command from anywhere, run:
 `make install`
 The variable `PREFIX` can be used to set the location for the executable.
 
+If you have [bash-completion](https://github.com/scop/bash-completion), you can
+optionally run:
+`make completion`
+To enable partial completion for the `notes` command.
+
 The notes file will be edited by whatever editor is specified by `$EDITOR`, or
 Vim by default.
 

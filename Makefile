@@ -1,6 +1,9 @@
 ifndef PREFIX
 	PREFIX=/usr/bin
 endif
+ifndef COMP_PREFIX
+	COMP_PREFIX=~/.local/share/bash-completion/completions
+endif
 
 RM=rm -rf
 
@@ -42,6 +45,10 @@ clean:	## Removes all generated files.
 
 install: ## Installs the notes executable to PREFIX
 	ln -s $(shell pwd)/notes $(PREFIX)
+
+completion:
+	[[ -d $(COMP_PREFIX) ]] || mkdir -p $(COMP_PREFIX)
+	ln -s $(shell pwd)/notes-completion.bash $(COMP_PREFIX)/notes.bash
 
 # Automatically generates a "help" target.
 # For a target to be automatically generated, put a comment starting with "##"
