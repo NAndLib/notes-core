@@ -4,11 +4,14 @@
 
 \usepackage[bookmarks]{hyperref}
 \usepackage{fullpage} % use the entire page instead of the usual LaTeX margins.
-\usepackage{amsmath}  % math symbols.
+\usepackage{amsmath,amssymb}  % math symbols.
 \usepackage{tikz}     % graphs.
 \usepackage{listings} % code.
 \usepackage{courier}  % font used in listing environment.
 \usepackage{framed}   % allow framing paragraphs.
+\usepackage{enumitem} % allow custom list items.
+\usepackage{pifont}   % checkmark font.
+\usepackage[normalem]{ulem} % strikethrough text.
 
 % Paragraph formatting.
 \setlength{\parindent}{0pt}
@@ -25,8 +28,18 @@
   breakatwhitespace=false,
 }
 
-% Custom commands.
+% Custom code
 \newcommand{\code}[1]{\texttt{#1}}
+
+% todo list
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+% checkmark.
+\newcommand{\cmark}{\ding{51}}
+% marking an item as done.
+\newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
+\hspace{-2.5pt}}
 
 % Anything wrapped between \ifprivate ... \fi will not be shown unless
 % \privatetrue is set
