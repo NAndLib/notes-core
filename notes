@@ -28,8 +28,8 @@ print_help() {
 Usage: notes (command|filename)
 
 Commands:
-  help                  Prints this help message.
-  list                  List all note files in order of most recently modified.
+  help (-h) (--help)    Prints this help message.
+  list (ls)             List all note files in order of most recently modified.
   open                  Opens generated PDF file of notes.
   edit                  Edits the most recently edited note.
   git [git-command], status, push, pull, commit
